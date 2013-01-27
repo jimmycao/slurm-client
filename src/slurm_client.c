@@ -21,15 +21,16 @@ int main(void)
 {
 		char *query_total = "get total node and slot no";
 		char *query_available = "get available node and slot no";
+#if 0
+		char *allocate_str = "allocate jobid=100 return=all timeout=10:app=0 np=5 N=2 node_list=vm2,vm3 flag=mandatory:app=1 N=2";
+		operation(allocate_str);
+#endif
 
-		char *allocate_str = "allocate N=2 node_list=vm[3-4],host120 flag=optional timeout=15";
-//		char *allocate_str = "allocate N=2 node_list=vm[2-3],host120 flag=mandatory timeout=15";
 
-//        operation(query_total);
-//        puts("============================");
-//        operation(query_available);
-        puts("============================");
-        operation(allocate_str);
-
+#if 1
+		char *deallocate = "deallocate slurm_jobid=744 job_return_code=0:slurm_jobid=745 job_return_code=-1";
+//		char *deallocate = "deallocate slurm_jobid=732 job_return_code=-1";
+        operation(deallocate);
+#endif
         return EXIT_SUCCESS;
 }

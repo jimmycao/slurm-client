@@ -24,11 +24,14 @@
 
 int operation(char *cmd_str)
 {
-	char rt_str[SIZE];
-	int socket_fd;
-
 	char IP[16];
 	uint32_t PORT;
+	struct sockaddr_in address;
+	int socket_fd;
+	char recv_buf[SIZE];
+
+
+
 	get_IP_PORT(IP, &PORT);
 
 	if(socket_fd = socket(AF_INET, SOCK_STREAM, 0), socket_fd < 0){
@@ -39,7 +42,7 @@ int operation(char *cmd_str)
 	//	 flags = fcntl(socket_fd, F_GETFL, 0);
 	//	 fcntl(socket_fd, F_SETFL, flags | O_NONBLOCK);
 
-	struct sockaddr_in address;
+
 	bzero(&address, sizeof(address));
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = inet_addr(IP);
@@ -50,20 +53,18 @@ int operation(char *cmd_str)
 		return -1;
 	}
 
-	//send the cmd
 	if(send(socket_fd, cmd_str, strlen(cmd_str) + 1, 0) < 0){
 		perror("ERROR: send");
 		return -1;
 	}
 
-	//recv
-	if(recv(socket_fd, rt_str, SIZE, 0) < 0){
+	if(recv(socket_fd, recv_buf, SIZE, 0) < 0){
 		perror("ERROR: recv");
 		return -1;
 	}
 
-	puts(rt_str);
-
 	close(socket_fd);
+
+	printf("recv_buf = %s\n", recv_buf);
 	return 0;
 }
